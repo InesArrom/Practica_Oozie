@@ -66,19 +66,16 @@ STORE bike_week_duration INTO '$OUTPUT_BIKES' USING org.apache.pig.piggybank.sto
 
 
 /* Agrupar per Bike_number, Start_date_wy, Start_date_w */
-station_week = GROUP bike_rental_week BY (Bike_number, Start_date_wy, Start_date_w, Start_station_number, End_station_number);
+station_week = GROUP bike_rental_week BY (Bike_number, Start_date_wy, Start_date_w, Start_station_number);
 
 /* Obtenim els usos de les estacions setmana */
 /* Obtenim el nombre de bicicleta de les estacions per setmana */
 station_week_use = FOREACH station_week GENERATE 
-   group.Bike_number as Bike_number, 
    group.Start_date_wy as Start_date_wy, 
    group.Start_date_w as Start_date_w, 
-   COUNT(bike_rental_week.Start_station_number) as Start_station_number, 
-   COUNT(bike_rental_week.Start_station) as Start_station, 
-   COUNT(bike_rental_week.End_station_number) as End_station_number, 
-   COUNT(bike_rental_week.End_station) as End_station, 
-   COUNT(bike_rental_week.Bike_number) as num_trajectes;
+   group.Start_station_number as Start_station_number, 
+   group.Start_station as Start_station, 
+   COUNT(bike_rental_week.Start_station_number) as total;
 
 /* Guadar el resultat */
 STORE station_week_use INTO '$OUTPUT_STATIONS' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE');
