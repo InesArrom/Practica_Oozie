@@ -8,7 +8,7 @@ register /usr/lib/pig/piggybank.jar;
 /* Important llevar la capçalera per les futures transformacions */
 /* Per poder operar les dates s'han d'incorporar com chararray,
    mesenvant es tranformaran DateTime */
-capitalbike = LOAD '$Input'
+capitalbike = LOAD '$INPUT_BIKES'
    USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE', 'NOCHANGE', 'SKIP_INPUT_HEADER') 
     AS (Duration:int,
         Start_date:chararray, 
