@@ -66,7 +66,7 @@ bikeweek = GROUP  capitalbikedateweek_01 BY (Bike_number,Start_date_wy,Start_dat
 bikeweek_duration_SUM = FOREACH bikeweek GENERATE group, SUM(capitalbikedateweek_01.Duration) as SUM;
 
 /* Guadar el resultat */
-STORE bikeweek_duration_SUM INTO '$Output' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE');
+STORE bikeweek_duration_SUM INTO '$OUTPUT_BIKES' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE');
 
 /*
 https://www.javatpoint.com/pig
