@@ -44,7 +44,7 @@ capitalbikedate = foreach capitalbikeregexdate generate
 --dump capitalbikeregexdate;
 */
 /* Amb les funcions GetWeekYear i GetWeek agafam els valors corresponents a l'any i la setmana de l'any */
-capitalbikedateweek_01 = foreach capitalbikedate generate
+capitalbikedateweek_01 = foreach capitalbikeregexdate generate
         Duration,
         GetWeekYear(ToDate(Start_date,'yyyy-MM-dd HH:mm:ss')) AS Start_date_wy,
         GetWeek(ToDate(Start_date,'yyyy-MM-dd HH:mm:ss')) AS Start_date_w,
