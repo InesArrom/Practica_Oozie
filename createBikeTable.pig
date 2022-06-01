@@ -74,10 +74,10 @@ station_week_use = FOREACH station_week GENERATE
    group.Bike_number as Bike_number, 
    group.Start_date_wy as Start_date_wy, 
    group.Start_date_w as Start_date_w, 
-   SUM(bike_rental_week.Start_station_number) as Start_station_number, 
-   SUM(bike_rental_week.Start_station) as Start_station, 
-   SUM(bike_rental_week.End_station_number) as End_station_number, 
-   SUM(bike_rental_week.End_station) as End_station, 
+   COUNT(bike_rental_week.Start_station_number) as Start_station_number, 
+   COUNT(bike_rental_week.Start_station) as Start_station, 
+   COUNT(bike_rental_week.End_station_number) as End_station_number, 
+   COUNT(bike_rental_week.End_station) as End_station, 
    COUNT(bike_rental_week.Bike_number) as num_trajectes;
 
 /* Guadar el resultat */
