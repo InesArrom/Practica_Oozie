@@ -78,17 +78,17 @@ STORE bikeweek_duration_SUM INTO '$OUTPUT_BIKES' USING org.apache.pig.piggybank.
 
 
 /* Agrupar per Bike_number, Start_date_wy, Start_date_w */
-stationweek = GROUP  capitalbikedateweek_01 BY (Bike_number,Start_date_wy,Start_date_w);
+/*stationweek = GROUP  capitalbikedateweek_01 BY (Bike_number,Start_date_wy,Start_date_w);*/
 
 /* Obtenim el temps que s'ha utilitzat una bicicleta per setmana */
 /* Obtenim el nombre de trajectes que ha realitzat una bicicleta per setmana */
-bikeweek_duration_SUM = FOREACH bikeweek GENERATE 
+/*bikeweek_duration_SUM = FOREACH bikeweek GENERATE 
    group.Bike_number as Bike_number, 
    group.Start_date_wy as Start_date_wy, 
    group.Start_date_w as Start_date_w, 
    SUM(capitalbikedateweek_01.Duration) as SUM, 
    COUNT(capitalbikedateweek_01.Bike_number) as num_trajectes;
-
+*/
 /* Guadar el resultat */
 /*STORE bikeweek_duration_SUM INTO '$OUTPUT_STATIONS' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE');*/
 
