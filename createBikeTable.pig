@@ -30,7 +30,7 @@ capitalbikeregexdate = filter capitalbike by
 --dump capitalbikeregexdate;
 
 /* Convertir els strings amb el tipus DataTime amb la funció ToDate */
-/*
+
 capitalbikedate = foreach capitalbikeregexdate generate
         Duration,
         ToDate(Start_date,'yyyy-MM-dd HH:mm:ss') AS Start_date_t,
@@ -42,9 +42,9 @@ capitalbikedate = foreach capitalbikeregexdate generate
         Bike_number, 
         Member_type;
 --dump capitalbikeregexdate;
-*/
+
 /* Amb les funcions GetWeekYear i GetWeek agafam els valors corresponents a l'any i la setmana de l'any */
-capitalbikedateweek_01 = foreach capitalbikeregexdate generate
+capitalbikedateweek_01 = foreach capitalbikedate generate
         Duration,
         GetWeekYear(ToDate(Start_date,'yyyy-MM-dd HH:mm:ss')) AS Start_date_wy,
         GetWeek(ToDate(Start_date,'yyyy-MM-dd HH:mm:ss')) AS Start_date_w,
