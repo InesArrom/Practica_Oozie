@@ -1,4 +1,5 @@
-/* Aquest script de pig permet processar les dates dels datasets
+/* 
+Aquest script de pig permet processar les dates dels datasets
 https://s3.amazonaws.com/capitalbikeshare-data/index.html
 */
 
@@ -6,8 +7,7 @@ https://s3.amazonaws.com/capitalbikeshare-data/index.html
 register /usr/lib/pig/piggybank.jar;
 
 /* Important llevar la capçalera per les futures transformacions */
-/* Per poder operar les dates s'han d'incorporar com chararray,
-   mesenvant es tranformaran DateTime */
+/* Per poder operar les dates s'han d'incorporar com chararray, mes envant es tranformaran DateTime */
 capitalbike = LOAD '$INPUT_BIKES'
    USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE', 'NOCHANGE', 'SKIP_INPUT_HEADER') 
     AS (Duration:int,
@@ -22,9 +22,8 @@ capitalbike = LOAD '$INPUT_BIKES'
     );
 --dump capitalbike;
 
-/* Perquè la tranformacions de les dates no donin problemes
-   ens hem d'assegurar que tenen el format correcte,
-   per això s'aplica una explesió regular */
+/* Perquè la tranformacions de les dates no donin problemes ens hem d'assegurar que tenen el format correcte,
+per això s'aplica una explesió regular */
 capitalbikeregexdate = filter capitalbike by
     (Start_date MATCHES '^([0-9]{4})-([0-1][0-9])-([0-3][0-9])\\s([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$')
     and (End_date MATCHES '^([0-9]{4})-([0-1][0-9])-([0-3][0-9])\\s([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$');
@@ -43,8 +42,7 @@ capitalbikedate = foreach capitalbikeregexdate generate
         Member_type;
 --dump capitalbikeregexdate;
 
-/* Amb les funcions GetWeekYear i GetWeek agafam els valors
-   corresponents a l'any i la setmana de l'any */
+/* Amb les funcions GetWeekYear i GetWeek agafam els valors corresponents a l'any i la setmana de l'any */
 capitalbikedateweek_01 = foreach capitalbikedate generate
         Duration,
         GetWeekYear(Start_date_t) AS Start_date_wy,
@@ -59,14 +57,19 @@ capitalbikedateweek_01 = foreach capitalbikedate generate
         Member_type;
 --dump capitalbikedateweek_01;
 
-/* Agrupar per Bike_number,Start_date_wy,Start_date_w */
+/* Agrupar per Bike_number, Start_date_wy, Start_date_w */
 bikeweek = GROUP  capitalbikedateweek_01 BY (Bike_number,Start_date_wy,Start_date_w);
 
 /* Obtenim el temps que s'ha utilitzat una bicicleta per setmana */
+/* Obtenim el nombre de trajectes que ha realitzat una bicicleta per setmana */
 bikeweek_duration_SUM = FOREACH bikeweek GENERATE group, SUM(capitalbikedateweek_01.Duration) as SUM, COUNT(capitalbikedateweek_01.Bike_number) as num_trajectes;
+
+/* ---------------------------------------------------------------- */
+
 
 /* Guadar el resultat */
 STORE bikeweek_duration_SUM INTO '$OUTPUT_BIKES' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE');
+STORE bikeweek_duration_SUM INTO '$OUTPUT_STATIONS' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE');
 
 /*
 https://www.javatpoint.com/pig
