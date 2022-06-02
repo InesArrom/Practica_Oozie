@@ -55,7 +55,7 @@ bike_week_duration = FOREACH bike_week GENERATE
     group.Bike_number as Bike_number, 
     group.Start_date_wy as Start_date_wy, 
     group.Start_date_w as Start_date_w, 
-    SUM(bike_rental_week.Duration) as SUM, 
+    SUM(bike_rental_week.Duration) as total_duration, 
     COUNT(bike_rental_week.Bike_number) as num_trajectes;
 
 /* Guadar el resultat */
@@ -75,7 +75,7 @@ station_week_use = FOREACH station_week GENERATE
    group.Start_date_w as Start_date_w, 
    group.Start_station_number as Start_station_number, 
    group.Start_station as Start_station, 
-   COUNT(bike_rental_week.Bike_number) as total;
+   COUNT(bike_rental_week.Start_station_number) as total;
 
 /* Guadar el resultat */
 STORE station_week_use INTO '$OUTPUT_STATIONS' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE');
