@@ -66,7 +66,7 @@ STORE bike_week_duration INTO '$OUTPUT_BIKES' USING org.apache.pig.piggybank.sto
 
 
 /* Agrupar per Bike_number, Start_date_wy, Start_date_w */
-station_week = GROUP bike_rental_week BY (Bike_number, Start_date_wy, Start_date_w, Start_station_number);
+station_week = GROUP bike_rental_week BY (Start_station_number, Start_date_wy, Start_date_w);
 
 /* Obtenim els usos de les estacions setmana */
 /* Obtenim el nombre de bicicleta de les estacions per setmana */
