@@ -68,9 +68,9 @@ STORE bike_week_duration INTO '$OUTPUT_BIKES' USING org.apache.pig.piggybank.sto
 /* Agrupar per Bike_number, Start_date_wy, Start_date_w */
 station_week = GROUP bike_rental_week BY (Start_station_number, Start_station, Start_date_wy, Start_date_w);
 
-
 /* Obtenim els usos de les estacions setmana */
 /* Obtenim el nombre de bicicleta de les estacions per setmana */
+/* Obtenim el total de nombres de membres segons el tipsu */
 station_week_use = FOREACH station_week { 
     casual_member = FILTER bike_rental_week BY Member_type == 'Casual';
     member_member = FILTER bike_rental_week BY Member_type == 'Member';
@@ -83,7 +83,6 @@ station_week_use = FOREACH station_week {
         COUNT(member_member) as total_member_member,
         COUNT(bike_rental_week.Start_station) as total_start_bikes,
         COUNT(bike_rental_week.End_station_number) as total_end_bikes,
-        COUNT(bike_rental_week.Bike_number) as total_uses,
         SUM(bike_rental_week.Duration) as total_duration;
 };
 
