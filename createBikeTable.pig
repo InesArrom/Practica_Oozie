@@ -74,7 +74,6 @@ station_week_use = FOREACH station_week GENERATE
    group.Start_date_wy as Start_date_wy, 
    group.Start_date_w as Start_date_w, 
    group.Start_station_number as Start_station_number, 
-   group.Start_station as Start_station, 
    COUNT(bike_rental_week.Start_station_number) as total;
 
 /* Guadar el resultat */
