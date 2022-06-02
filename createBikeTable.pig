@@ -72,36 +72,20 @@ station_week = GROUP bike_rental_week BY (Start_station_number, Start_station, S
 /* Obtenim els usos de les estacions setmana */
 /* Obtenim el nombre de bicicleta de les estacions per setmana */
 station_week_use = FOREACH station_week { 
-    -- casual_member = FILTER bike_rental_week BY Member_type == 'Casual';
-    -- member_member = FILTER bike_rental_week BY Member_type == 'Member';
+    casual_member = FILTER bike_rental_week BY Member_type == 'Casual';
+    member_member = FILTER bike_rental_week BY Member_type == 'Member';
     GENERATE 
         group.Start_date_wy as Start_date_wy, 
         group.Start_date_w as Start_date_w, 
         group.Start_station_number as station_number, 
         group.Start_station as station_name,
-        -- COUNT(casual_member) as total_casual_member,
-        -- COUNT(member_member) as total_member_member,
+        COUNT(casual_member) as total_casual_member,
+        COUNT(member_member) as total_member_member,
         COUNT(bike_rental_week.Start_station) as total_start_bikes,
         COUNT(bike_rental_week.End_station_number) as total_end_bikes,
         COUNT(bike_rental_week.Bike_number) as total_uses,
         SUM(bike_rental_week.Duration) as total_duration;
 };
-
--- station_start = GROUP capitalbikedate_01 BY (Start_station_number, Start_station, Start_date_wy, Start_date_m); 
--- station = FOREACH station_start{
---     casual = FILTER capitalbikedate_01 BY Member_type == 'Casual';
---     member = FILTER capitalbikedate_01 BY Member_type == 'Member';
---     GENERATE
---     group.Start_station_number as identificador_estacio,
---     group.Start_station as nom_estacio,
---     COUNT(casual) as tipus_usuari_casual_count,
---     COUNT(member) as tipus_usuari_Member_count,
---     COUNT(capitalbikedate_01.Start_station) as nombre_bicicletes_entrades,
---     COUNT(capitalbikedate_01.End_station_number) as nombre_bicicletes_sortides,
---     SUM(capitalbikedate_01.Duration) as nombre_hores_totals_trajecte,
---     group.Start_date_wy as periode_Year, 
---     group.Start_date_m as periode_Month;
--- };
 
 /* Guadar el resultat */
 STORE station_week_use INTO '$OUTPUT_STATIONS' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',', 'YES_MULTILINE');
