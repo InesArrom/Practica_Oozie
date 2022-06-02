@@ -74,6 +74,9 @@ station_week_use = FOREACH station_week GENERATE
    group.Start_date_wy as Start_date_wy, 
    group.Start_date_w as Start_date_w, 
    group.Start_station_number as Start_station_number, 
+   bike_rental_week.Start_station as station_name,
+   SUM(bike_rental_week.Member_type == 'Casual') as casual_member,
+   SUM(bike_rental_week.Member_type == 'Member') as member_member,
    COUNT(bike_rental_week.Start_station_number) as total;
 
 /* Guadar el resultat */
