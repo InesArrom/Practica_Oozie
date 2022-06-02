@@ -83,8 +83,8 @@ station_week_use = FOREACH station_week {
         COUNT(member_member) as total_member_member,
         COUNT(bike_rental_week.Start_station) as total_start_bikes,
         COUNT(bike_rental_week.End_station_number) as total_end_bikes,
-        COUNT(bike_rental_week.Bike_number) as total_uses;
-        SUM(bike_rental_week.Duration) as total_duration, 
+        COUNT(bike_rental_week.Bike_number) as total_uses,
+        SUM(bike_rental_week.Duration) as total_duration;
 };
 
 -- station_start = GROUP capitalbikedate_01 BY (Start_station_number, Start_station, Start_date_wy, Start_date_m); 
